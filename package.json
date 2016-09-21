@@ -1,0 +1,22 @@
+{
+  "name": "frontup",
+  "version": "1.0.0",
+  "description": "Update frontend files from AWS S3 service or from gitlab and/or github",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "AWS",
+    "ANGULARJS",
+    "NODEJS",
+    "JSON",
+    "API",
+    "REST"
+  ],
+  "author": "Thiago R. M. Bitencourt",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.6.4"
+  }
+}
