@@ -1,27 +1,33 @@
-var AWS = require('aws-sdk');
+/*
+  @Author: Thiago R. M. Bitencourt
+  Node.js app entry
+*/
+'use strict';
+global.__base = __dirname + '/server/';
 
-AWS.config.loadFromPath('./aws.config.json');
+var express = require('express');
+var bodyParser = require('body-parser');
+var http = require('http');
 
-//Instantiate and set API version
-var s3 = new AWS.S3({apiVersion: '2006-03-01'});
+var app = express();
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json({type: 'application/json'}));
 
-s3.listBuckets(function(err, data) {
-  if (err) { console.log("Error:", err); }
-  else {
-    for (var index in data.Buckets) {
-      var bucket = data.Buckets[index];
-      console.log("Bucket: ", bucket.Name, ' : ', bucket.CreationDate);
-    }
-  }
+//Necessary headers to clients access.
+app.all('*', function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
 });
 
-//List all objects in a bucket
-// s3.listObjectsV2({Bucket: 'projetos-frontend'}, function(err, data) {
-//   if (err) console.log(err, err.stack); // an error occurred
-//   else     console.log(data);           // successful response
-// });
+app.use('/', express.static('public/src'));
 
-//Get the object and save in a file
-// var params = {Bucket: 'projetos-frontend', Key: 'sn-tempo.tar.gz'};
-// var file = require('fs').createWriteStream(params.Key);
-// s3.getObject(params).createReadStream().pipe(file);
+var LoadRouter = require(__base + 'routes/loadRoutes');
+app.use('/api/v1.0/', new LoadRouter());
+
+var httpPort = 8080;
+http.createServer(app).listen(httpPort, function(){
+  console.log("HTTP server listening on port %s", httpPort);
+});

@@ -17,6 +17,9 @@
   "author": "Thiago R. M. Bitencourt",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.6.4"
+    "aws-sdk": "^2.6.4",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "fs-extra": "^0.30.0"
   }
 }
