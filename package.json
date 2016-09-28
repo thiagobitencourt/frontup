@@ -15,10 +15,11 @@
     "REST"
   ],
   "author": "Thiago R. M. Bitencourt",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.6.4",
     "body-parser": "^1.15.2",
+    "bower": "^1.7.9",
     "express": "^4.14.0",
     "fs-extra": "^0.30.0"
   }

@@ -1,0 +1,29 @@
+{
+  "name": "frontup",
+  "version": "1.0.0",
+  "description": "Update frontend files from AWS S3 service or from gitlab and/or github",
+  "main": "app.js",
+  "authors": [
+    "Thiago R. M. Bitencourt"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "AWS",
+    "ANGULARJS",
+    "NODEJS",
+    "JSON",
+    "API",
+    "REST"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.8"
+  }
+}
