@@ -1,1 +1,3 @@
 node_modules/
+server/config/aws.config.json
+public/assets/libs
