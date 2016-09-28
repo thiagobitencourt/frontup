@@ -4,7 +4,7 @@
 */
 'use strict';
 global.__base = __dirname + '/server/';
-
+global.__media = __base + 'restricted_media/';
 var express = require('express');
 var bodyParser = require('body-parser');
 var http = require('http');

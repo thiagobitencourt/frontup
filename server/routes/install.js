@@ -2,9 +2,11 @@ var express = require('express');
 
 var router;
 var AWS;
+var Compress;
 var InstallRoute = function(router) {
   this.router = router;
   AWS = require(__base + 'controllers/aws');
+  Compress = require(__base + 'controllers/compress');
   setInstallRoutes();
   setProgressRoutes();
 }
@@ -14,18 +16,30 @@ var setInstallRoutes = function() {
   var _routeId = _route + '/:project/:version';
 
   this.router.get(_routeId, function(req, res) {
-    AWS.getObject(req.params.project, req.params.version, function() {
-      res.send("Done...!");
+    var project = req.params.project;
+    var version = req.params.version;
+    var file = [__media, project, '/', version].join("");
+    var dest = (req.query.destination || '/home/thiago/dev/workspace-thiago/instalation') + '/' + project;
+
+    AWS.getObject(project, version, function() {
+      Compress.decompress(file, dest, function(err) {
+        if(err) return res.send(err.stack);
+
+        res.send(`Done...! ${project} ${version} have been installed`);
+      });
     });
     /*
-    Ideia:
+    Idea:
       - How about implement a state machine to handle the install process?
       - The process are:
         -> download
         -> Deploy
-        -> Extract
+        -> Extract / copy
         -> Remove .tar.gz file (or keep it, but the state is the same - finished);
+      - How about open a webSocket to 'real-time' feed back for user
+      - Need a log system for the all instalation process
     */
+
   });
 }
 

@@ -16,8 +16,8 @@ var AWSController = function() {
     //Get the object and save in a file
     var params = {Bucket: bucket, Key: object};
 
-    fs.mkdirsSync(__base + 'restricted_media/' + params.Bucket);
-    var file = fs.createWriteStream(__base + 'restricted_media/' + params.Bucket + '/' + params.Key);
+    fs.mkdirsSync(__media + params.Bucket);
+    var file = fs.createWriteStream(__media + params.Bucket + '/' + params.Key);
 
     s3.getObject(params)
       .on('httpData', function(chunk) {
