@@ -1,0 +1,20 @@
+<table class="table table-bordered">
+  <tr>
+    <td>Status</td>
+    <td>Versão</td>
+    <td>Data</td>
+    <td>Instalar</td>
+  </tr>
+  <tr ng-repeat="record in $ctrl.records">
+    <td align="center">
+      <span ng-if="record.installed" style="color: green;">
+        <i class="glyphicon glyphicon-ok"></i>
+      </span>
+    </td>
+    <td>{{record.version}}</td>
+    <td>{{record.release | date:'dd/MM/yyyy HH:mm'}}</td>
+    <td>
+      <a style="cursor: pointer;"><i class="glyphicon glyphicon-cloud-download"></i> instalar</a>
+    </td>
+  </tr>
+</table>

@@ -3,61 +3,32 @@
   <head>
     <meta charset="utf-8">
     <title>Front-up</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="assets/libs/bootstrap/dist/css/bootstrap.min.css">
-
   </head>
-  <body ng-app="app.frontup">
+  <body ng-app="app.frontup" ng-controller="homeController as $home">
 
     <div class="container">
+    <menu-bar> </menu-bar>
 
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">FrontUP</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="">Projetos</a></li>
-            <li><a href="">Em andamento <span class="label label-info">0</span></a></li>
-            <li><a href="">Histórico</a></li>
-          </ul>
-
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href=""
-                class="dropdown-toggle"
-                data-toggle="dropdown"
-                role="button"
-                aria-haspopup="true"
-                aria-expanded="false">Configurações <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="">Local</a></li>
-                <li><a href="">SSH</a></li>
-                <li><a href="">FTP</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="">Usuários</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
-    </nav>
-
-
-    <div ui-view> </div>
+    <accordion>
+      <accordion-panel ng-repeat="project in $home.projects" heading="{{project.name}}">
+        <project-table records="project.records"></project-table>
+      </accordion-panel>
+    </accordion>
 
     </div>
 
     <script type="text/javascript" src="assets/libs/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="assets/libs/angular/angular.min.js"></script>
-    <script type="text/javascript" src="assets/libs/angular-ui-router/release/angular-ui-router.min.js"></script>
 
     <script type="text/javascript" src="app/modules/home/app.home.js"></script>
+    <script type="text/javascript" src="app/components/menuBar/menuBar.module.js"></script>
+    <script type="text/javascript" src="app/components/accordion/accordion.module.js"></script>
+    <script type="text/javascript" src="app/components/accordion/accordionPanel.js"></script>
+    <script type="text/javascript" src="app/components/table/table.module.js"></script>
     <script type="text/javascript" src="app/app.frontup.js"></script>
 
   </body>
