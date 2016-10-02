@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Front-up</title>
+    <title>FrontUP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="assets/libs/bootstrap/dist/css/bootstrap.min.css">
@@ -12,9 +12,16 @@
     <div class="container">
     <menu-bar> </menu-bar>
 
+    <div ng-if="$home.installedMessage">
+      <div class="alert alert-success">
+        <a href="" ng-click="$home.installedMessage = null"class="close" data-dismiss="alert">&times;</a>
+        {{$home.installedMessage}}
+      </div>
+    </div>
+
     <accordion>
       <accordion-panel ng-repeat="project in $home.projects" heading="{{project.name}}">
-        <project-table records="project.records"></project-table>
+        <project-table records="project.records" on-install="$home.install(object)"></project-table>
       </accordion-panel>
     </accordion>
 
@@ -25,6 +32,7 @@
     <script type="text/javascript" src="assets/libs/angular/angular.min.js"></script>
 
     <script type="text/javascript" src="app/modules/home/app.home.js"></script>
+    <script type="text/javascript" src="app/modules/home/home.service.js"></script>
     <script type="text/javascript" src="app/components/menuBar/menuBar.module.js"></script>
     <script type="text/javascript" src="app/components/accordion/accordion.module.js"></script>
     <script type="text/javascript" src="app/components/accordion/accordionPanel.js"></script>

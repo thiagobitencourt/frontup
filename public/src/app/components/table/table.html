@@ -2,6 +2,7 @@
   <tr>
     <td>Status</td>
     <td>Versão</td>
+    <td>Tamanho</td>
     <td>Data</td>
     <td>Instalar</td>
   </tr>
@@ -12,9 +13,10 @@
       </span>
     </td>
     <td>{{record.version}}</td>
-    <td>{{record.release | date:'dd/MM/yyyy HH:mm'}}</td>
+    <td>{{record.size}}</td>
+    <td>{{record.lastModified | date:'dd/MM/yyyy HH:mm'}}</td>
     <td>
-      <a style="cursor: pointer;"><i class="glyphicon glyphicon-cloud-download"></i> instalar</a>
+      <a ng-click="$ctrl.onInstall({object: record.object})" style="cursor: pointer;"><i class="glyphicon glyphicon-cloud-download"></i> instalar</a>
     </td>
   </tr>
 </table>

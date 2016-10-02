@@ -1,6 +1,6 @@
 {
   "name": "frontup",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "Update frontend files from AWS S3 service or from gitlab and/or github",
   "main": "app.js",
   "authors": [

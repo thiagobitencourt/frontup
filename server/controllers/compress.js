@@ -18,17 +18,10 @@ var CompressController = function() {
           wee can extect directly to the destination and skip the copy step.
         - If the tmp extracted folder has only one directory it enter this directory to copy, otherwise copy all.
     */
-
     fs.mkdirs(dest, function (err) {
       if (err) return callback(err);
 
-      targz().extract(source, __media + 'tmp', function(err) {
-        if(err) return callback(err);
-        fs.copy(__media + 'tmp/dist/', dest, function() {
-          /* remove tmp folder */
-          callback(err);
-        });
-      });
+      targz().extract(source, dest, callback);
     });
   };
 };

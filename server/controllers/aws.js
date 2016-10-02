@@ -16,8 +16,14 @@ var AWSController = function() {
     //Get the object and save in a file
     var params = {Bucket: bucket, Key: object};
 
-    fs.mkdirsSync(__media + params.Bucket);
+    fs.createFileSync(__media + params.Bucket + '/' + params.Key);
     var file = fs.createWriteStream(__media + params.Bucket + '/' + params.Key);
+
+    // s3.getObject(params, function(err, data) {
+    //   if (err) return callback(err.stack); // an error occurred
+    //   console.log(data);
+    //   fs.writeFile(__media + params.Bucket + '/' + params.Key, data.body, callback);
+    // });
 
     s3.getObject(params)
       .on('httpData', function(chunk) {
@@ -27,6 +33,7 @@ var AWSController = function() {
       .on('httpDone', function() {
         file.end();
         /* update state machine here */
+        console.log('done');
         callback();
       })
     .send();

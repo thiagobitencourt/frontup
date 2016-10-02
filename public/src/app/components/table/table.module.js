@@ -4,7 +4,8 @@
   angular.module('app.projectTable', [])
     .component('projectTable', {
       bindings: {
-        records: '='
+        records: '=',
+        onInstall: '&'
       },
       templateUrl: '/app/components/table/table.html'
     });

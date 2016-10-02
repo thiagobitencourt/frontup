@@ -13,19 +13,22 @@ var InstallRoute = function(router) {
 
 var setInstallRoutes = function() {
   var _route = '/install';
-  var _routeId = _route + '/:project/:version';
+  var _routeId = _route + '/:project';
 
   this.router.get(_routeId, function(req, res) {
-    var project = req.params.project;
-    var version = req.params.version;
-    var file = [__media, project, '/', version].join("");
-    var dest = (req.query.destination || '/home/thiago/dev/workspace-thiago/instalation') + '/' + project;
 
-    AWS.getObject(project, version, function() {
+
+    var project = req.params.project;
+    var object = req.query.object;
+    var file = [__media, project, '/', object].join("");
+
+    var dest = (req.query.destination || '/home/thiago/dev/workspace-thiago/instalation');
+
+    AWS.getObject(project, object, function() {
+      // return res.send(`Done...! ${project}/${object} have been installed`);
       Compress.decompress(file, dest, function(err) {
         if(err) return res.send(err.stack);
-
-        res.send(`Done...! ${project} ${version} have been installed`);
+        res.send(`Done...! ${project}/${object} have been installed`);
       });
     });
     /*
