@@ -9,6 +9,18 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var http = require('http');
 
+// var Process = require(__base + 'controllers/Process');
+// var pr = new Process({object: {bucket: 'esse'}, install: {dest: 'aqui'}});
+// console.log(pr.id());
+// console.log(pr.status());
+//
+// pr.status(Process.STATUS.DONE);
+// console.log(pr.status());
+//
+// console.log(pr.options());
+//
+// return;
+
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json({type: 'application/json'}));

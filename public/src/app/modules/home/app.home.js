@@ -25,7 +25,10 @@
         homeService
           .install(object)
           .then(function(result) {
-            vm.installedMessage = result.data;
+            homeService.getStatus(result.data.process)
+              .then(function(res) {
+                vm.installedMessage = res.data;
+              });
           });
       }
 

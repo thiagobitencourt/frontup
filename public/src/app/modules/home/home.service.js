@@ -10,7 +10,8 @@
     var bucket = 'projetos-frontend'
     var service = {
       getVersion: _getVersion,
-      install: _install
+      install: _install,
+      getStatus: _getStatus
     };
     return service;
 
@@ -31,6 +32,10 @@
           params: { object: object }
         }
       );
+    }
+
+    function _getStatus(id) {
+      return $http.get(url + 'progress/' + id);
     }
 
   };

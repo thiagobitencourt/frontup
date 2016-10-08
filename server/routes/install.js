@@ -1,5 +1,7 @@
 var express = require('express');
 
+var processPool = require(__base + 'controllers/processPool');
+
 var router;
 var AWS;
 var Compress;
@@ -17,20 +19,41 @@ var setInstallRoutes = function() {
 
   this.router.get(_routeId, function(req, res) {
 
-
     var project = req.params.project;
     var object = req.query.object;
     var file = [__media, project, '/', object].join("");
 
-    var dest = (req.query.destination || '/home/thiago/dev/workspace-thiago/instalation');
+    var dest = (req.query.destination || '/home/thiago/dev/workspace-thiago/instalation/');
+    var objectDest = __media + project
 
-    AWS.getObject(project, object, function() {
-      // return res.send(`Done...! ${project}/${object} have been installed`);
-      Compress.decompress(file, dest, function(err) {
-        if(err) return res.send(err.stack);
-        res.send(`Done...! ${project}/${object} have been installed`);
-      });
-    });
+    var options = {
+      object: {
+        bucket: project,
+        object: object,
+        destination: file
+      },
+      install: {
+        destination: dest,
+        keep: true
+      }
+    }
+
+    var procId = processPool.newProcess(options).id();
+    console.log('Started process ' + procId);
+    // build the option object and pass on
+    return res.status(200).send({process: procId});
+
+
+    // AWS.getObject(project, object, function() {
+    //   // return res.send(`Done...! ${project}/${object} have been installed`);
+    //   Compress.decompress(file, dest, function(err) {
+    //     if(err) return res.send(err.stack);
+    //     res.send(`Done...! ${project}/${object} have been installed`);
+    //   });
+    // });
+
+
+
     /*
     Idea:
       - How about implement a state machine to handle the install process?
@@ -51,6 +74,10 @@ var setProgressRoutes = function() {
   var _routeId = _route + '/:id';
 
   this.router.get(_routeId, function(req, res) {
+
+    var proc = processPool.getStatus(req.params.id);
+    return res.status(200).send({status: proc});
+
     /*
       Idea:
         A proccess is the instalation of a new package (frontend project) and it has its information, like:
@@ -92,7 +119,6 @@ var setProgressRoutes = function() {
         /* User info here */
       }
     };
-    return res.send(response);
   });
 
   /* Return a list of process of projects been installed or all of them */
