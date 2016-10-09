@@ -16,7 +16,10 @@ var setBucketsRoutes = function() {
 
   router.get(_route, function(req, res) {
     AWS.listBuckets(function(err, data) {
-      if(err) return res.status(400).send(err);
+      if(err) {
+        console.log(err);
+        return res.status(400).send(err);
+      }
       res.send(data.Buckets);
     });
   });
@@ -29,7 +32,10 @@ var setVersionRoutes = function() {
   router.get(_routeId, function(req, res) {
 
     AWS.listObjects(req.params.bucket, function(err, data){
-      if(err) return res.status(400).send(err);
+      if(err) {
+        console.log(err);
+        return res.status(400).send(err);
+      }
 
       var sendErr = (e) => {res.status(400).send(e)};
       var byteToMb = (b) => { return ((b / 1024) / 1024)};

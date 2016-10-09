@@ -1,7 +1,17 @@
 'use strict';
 var AWSController = function() {
   var AWS = require('aws-sdk');
-  AWS.config.loadFromPath(__base + 'config/aws.config.json');
+  // AWS.config.loadFromPath(__base + 'config/aws.config.json');
+  AWS.config.update(__config.aws);
+
+  /**
+    // Proxy configuration
+    var proxy = require('proxy-agent');
+
+    AWS.config.update({
+      httpOptions: { agent: proxy('http://internal.proxy.com') }
+    });
+  */
 
   var s3 = new AWS.S3({apiVersion: '2006-03-01'});
   var services = {
@@ -18,15 +28,6 @@ var AWSController = function() {
 
     fs.createFileSync(options.destination);
     var file = fs.createWriteStream(options.destination);
-    // fs.createFileSync(options.destination + params.Bucket + '/' + params.Key);
-    // var file = fs.createWriteStream(options.destination + params.Bucket + '/' + params.Key);
-
-    // s3.getObject(params, function(err, data) {
-    //   if (err) return callback(err.stack); // an error occurred
-    //   console.log(data);
-    //   fs.writeFile(__media + params.Bucket + '/' + params.Key, data.body, callback);
-    // });
-
     s3.getObject(params)
       .on('httpData', function(chunk) {
         /* update state machine here to increment percentage of download stage*/

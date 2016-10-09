@@ -39,7 +39,7 @@
           .install(vm.currentBucket.Name, project.object)
           .then(function(result) {
             project.process = result.data.process;
-              _getStatus(project);
+            _getStatus(project);
           }, _handleError);
       }
 

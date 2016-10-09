@@ -1,2 +1,4 @@
 .git/
 .gitignore
+server/config/aws.config.json
+server/config/aws.json

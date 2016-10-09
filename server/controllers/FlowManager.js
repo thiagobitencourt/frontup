@@ -98,7 +98,7 @@ var FlowManager = function() {
     console.error('Process: ' + _process.id() + ' - ERROR => ');
     console.error(error);
     _process.status(Process.STATUS.ERROR, error.message)
-    return deferred.resolve(_process);
+    return deferred.reject(_process.options());
   }
 }
 

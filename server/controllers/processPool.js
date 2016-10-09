@@ -4,11 +4,11 @@ var Process = require(__base + 'controllers/Process');
 //ES6 code:
 // var {Start, Fetch, Extract, Install, Clean, Done} = Flow;
 
-var InitProcess = function(process) {
+var InitProcess = function(proc) {
   var Flow = require(__base + 'controllers/FlowManager');
 
-  console.log('Process: ' + process.id() + ' - Starting');
-  Flow.Start(process)
+  console.log('Process: ' + proc.id() + ' - Starting');
+  Flow.Start(proc)
     .then(Flow.Fetch)
     .then(Flow.Extract)
     // .then(Flow.Install)
@@ -20,13 +20,13 @@ var InitProcess = function(process) {
 var ProcessPool = function(){
     var processPool = {};
 
-    this.getStatus = function(process) {
-      if(!isNaN(process)) {
-        var pr = processPool[process];
+    this.getStatus = function(proc) {
+      if(!isNaN(proc)) {
+        var pr = processPool[proc];
         return pr ? pr.status() : Process.STATUS.NOTFOUND;
       }
-      else if (process.id) {
-        var pr = processPool[process.id];
+      else if (proc.id) {
+        var pr = processPool[proc.id];
         return pr ? pr.status() : Process.STATUS.NOTFOUND;
       }
       else

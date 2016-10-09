@@ -58,9 +58,9 @@ var setProgressRoutes = function() {
     var Process = require(__base + 'controllers/Process');
     var procs = processPool.getProcessInfo();
 
-    if(req.query.error && req.query.error === true)
+    if(req.query.error && req.query.error === 'true')
       procs = procs.filter(pr => pr.status.code === Process.STATUS.ERROR.code);
-    if(req.query.done && req.query.done === true)
+    if(req.query.done && req.query.done === 'true')
       procs = procs.filter(pr => pr.status.code === Process.STATUS.DONE.code);
 
     return res.status(200).send(procs);

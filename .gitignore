@@ -1,4 +1,5 @@
 node_modules/
 server/config/aws.config.json
+server/config/aws.json
 server/restricted_media/
 public/src/assets/libs/
