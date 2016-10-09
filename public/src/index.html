@@ -12,6 +12,19 @@
     <div class="container">
     <menu-bar> </menu-bar>
 
+    <div class="row">
+      <div class="col-md-3">
+
+        <select class="form-control" placeholder="Select a bucket"
+            ng-options="bucket.Name for bucket in $home.buckets"
+            ng-model="$home.currentBucket"
+            ng-click="$home.loadProjects()">
+          <option value="">Select a bucket</option>
+         </select>
+      </div>
+      <p class="text-danger" style="margin-top:5px;"> Using bucket: <strong>{{$home.currentBucket.Name || 'none selected'}}</strong></p>
+    </div>
+
     <div ng-if="$home.installedMessage">
       <div class="alert alert-success">
         <a href="" ng-click="$home.installedMessage = null"class="close" data-dismiss="alert">&times;</a>
@@ -26,7 +39,7 @@
       </div>
     </div>
 
-    <accordion>
+    <accordion ng-if="$home.currentBucket">
       <accordion-panel ng-repeat="project in $home.projects" heading="{{project.name}}">
         <project-table records="project.records" on-install="$home.install(project)"></project-table>
       </accordion-panel>

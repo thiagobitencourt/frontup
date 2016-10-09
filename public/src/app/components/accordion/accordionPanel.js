@@ -16,6 +16,7 @@
 
   function AccordionPanelController() {
     var self = this;
+    self.selected = true;
 
     self.$onInit = function() {
       self.parent.addPanel(self);

@@ -26,6 +26,7 @@
       }
 
       function loadProjects() {
+        if(!vm.currentBucket) return;
         homeService
           .getProjects(vm.currentBucket.Name)
           .then(function(projects) {
