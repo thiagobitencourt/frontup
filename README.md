@@ -22,5 +22,4 @@ node app.js
 - Download from Bitbucket
 - Download from custom API
 
-
 **Author**  _Thiago R. M. Bitencourt_

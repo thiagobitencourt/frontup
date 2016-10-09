@@ -7,27 +7,28 @@ var AWS;
 var ProjetRoute = function(rt) {
   router = rt;
   AWS = require(__base + 'controllers/aws');
-  setProjectRoutes();
+  setBucketsRoutes();
   setVersionRoutes();
 }
 
-var setProjectRoutes = function() {
-  var _route = '/project';
+var setBucketsRoutes = function() {
+  var _route = '/buckets';
 
   router.get(_route, function(req, res) {
     AWS.listBuckets(function(err, data) {
       if(err) return res.status(400).send(err);
-      res.send(data);
+      res.send(data.Buckets);
     });
   });
 }
 
 var setVersionRoutes = function() {
-  var _route = '/version';
-  var _routeId = _route + '/:project';
+  var _route = '/projects';
+  var _routeId = _route + '/:bucket';
 
   router.get(_routeId, function(req, res) {
-    AWS.listObjects(req.params.project, function(err, data){
+
+    AWS.listObjects(req.params.bucket, function(err, data){
       if(err) return res.status(400).send(err);
 
       var sendErr = (e) => {res.status(400).send(e)};

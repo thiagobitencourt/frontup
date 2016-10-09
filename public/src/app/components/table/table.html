@@ -8,15 +8,20 @@
   </tr>
   <tr ng-repeat="record in $ctrl.records">
     <td align="center">
-      <span ng-if="record.installed" style="color: green;">
-        <i class="glyphicon glyphicon-ok"></i>
+      <span ng-if="record.status">
+        <i ng-if="record.status.code === 1"  style="color: blue;" class="glyphicon glyphicon-download-alt"></i>
+        <i ng-if="record.status.code === 2"  style="color: blue;" class="glyphicon glyphicon-save"></i>
+        <i ng-if="record.status.code === 3" style="color: green;" class="glyphicon glyphicon-ok"></i>
+        <i ng-if="record.status.code === 4"  style="color: blue;" class="glyphicon glyphicon-refresh"></i>
+        <i ng-if="record.status.code === 5"  style="color: red;" class="glyphicon glyphicon-remove"></i>
+        {{record.status.description}}
       </span>
     </td>
     <td>{{record.version}}</td>
     <td>{{record.size}}</td>
     <td>{{record.lastModified | date:'dd/MM/yyyy HH:mm'}}</td>
     <td>
-      <a ng-click="$ctrl.onInstall({object: record.object})" style="cursor: pointer;"><i class="glyphicon glyphicon-cloud-download"></i> instalar</a>
+      <a ng-click="$ctrl.onInstall({project: record})" style="cursor: pointer;"><i class="glyphicon glyphicon-cloud-download"></i> instalar</a>
     </td>
   </tr>
 </table>

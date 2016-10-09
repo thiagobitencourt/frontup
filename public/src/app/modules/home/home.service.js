@@ -7,38 +7,28 @@
 
   function homeService($http) {
     var url = document.location.origin + '/api/v1.0/';
-    var bucket = 'projetos-frontend'
     var service = {
-      getVersion: _getVersion,
-      install: _install,
-      getStatus: _getStatus
+      getBuckets: _getBuckets,
+      getProjects: _getProjects,
+      getStatus: _getStatus,
+      install: _install
     };
     return service;
 
-    function _getVersion(project) {
-      project = project || bucket;
-      return $http.get(url + 'version/' + project)
-        .then(function(result) {
-          return result.data;
-        })
-        .catch(function(result) {
-          console.log(result);
-        });
-    }
-
-    function _install(object, project) {
-      return $http.get(url + 'install/' + (project || bucket),
+    function _getBuckets() { return $http.get(url + 'buckets'); }
+    function _getProjects(bucket) { return $http.get(url + 'projects/' + bucket); }
+    function _getStatus(id) { return $http.get(url + 'progress/' + id); }
+    function _install(bucket, object) {
+      return $http.get(url + 'install',
         {
-          params: { object: object }
+          params:
+            {
+              bucket: bucket,
+              object: object
+            }
         }
       );
     }
-
-    function _getStatus(id) {
-      return $http.get(url + 'progress/' + id);
-    }
-
   };
-
   homeService.$inject = ['$http'];
 })();

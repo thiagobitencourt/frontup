@@ -13,10 +13,8 @@ var Process = function(options) {
   var _error = false;
   var _stopped = true;
   var _processStatus = Process.STATUS.STOPPED;
-  var _errorMessage = null;
+  var _errorMessage = undefined;
   var _options = options;
-
-  endTime: null,
 
   this.status = status;
   this.id = () => { return _id };
@@ -56,7 +54,10 @@ var Process = function(options) {
 
   // Set the status or return the current status if no status parameter is available
   function status(status, message) {
-    if(!status) return _processStatus;
+    if(!status) {
+      _processStatus.message = _errorMessage;
+      return _processStatus;
+    }
 
     if(_isValidStatus(status)) {
       _processStatus = status;
@@ -84,7 +85,7 @@ var Process = function(options) {
   function _isValidStatus(status) {
     var isValid = false;
     var Status = Process.STATUS;
-    for(var st in Status) { //TODO: test
+    for(var st in Status) {
       var prSt = Status[st];
       if(prSt.code === status.code && prSt.description === status.description) {
         isValid = true;
@@ -97,6 +98,7 @@ var Process = function(options) {
 
 /* The ENUM with the possibles status for a process */
 Process.STATUS = {
+  NOTFOUND: {code: -1, description: 'Not found'},
   STOPPED:  {code: 0, description: 'Stopped'},
   DONWLOAD: {code: 1, description: 'Downloading'},
   INSTALL:  {code: 2, description: 'Installing'},

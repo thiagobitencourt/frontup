@@ -21,12 +21,16 @@ var ProcessPool = function(){
     var processPool = {};
 
     this.getStatus = function(process) {
-      if(!isNaN(process))
-        return processPool[process].status();
-      else if (process.id)
-        return processPool[process.id].status();
+      if(!isNaN(process)) {
+        var pr = processPool[process];
+        return pr ? pr.status() : Process.STATUS.NOTFOUND;
+      }
+      else if (process.id) {
+        var pr = processPool[process.id];
+        return pr ? pr.status() : Process.STATUS.NOTFOUND;
+      }
       else
-       return undefined; // process not found
+       return Process.STATUS.NOTFOUND; // process not found
     }
 
     this.getProcess = (id) => {
@@ -39,6 +43,26 @@ var ProcessPool = function(){
       InitProcess(proc);
       // Initiate the process here...
       return proc;
+    }
+
+    this.getProcessInfo = (id) => {
+      var sintInfo = (proc) => {
+        return {
+            id: proc.id(),
+            status: proc.status(),
+            options: proc.options()
+          };
+      }
+      if(id) {
+        var proc = this.getProcess(id);
+        return proc ? sintInfo(proc) : {status: Process.STATUS.NOTFOUND};
+      } else {
+        var procs = [];
+        for(var pr in processPool) {
+          procs.push(sintInfo(this.getProcess(pr)));
+        }
+        return procs;
+      }
     }
 }
 

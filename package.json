@@ -2,7 +2,7 @@
   "name": "frontup",
   "version": "0.1.1",
   "description": "Update frontend files from AWS S3 service or from gitlab and/or github",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
