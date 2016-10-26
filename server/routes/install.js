@@ -49,6 +49,7 @@ var setProgressRoutes = function() {
   var _routeId = _route + '/:id';
 
   this.router.get(_routeId, function(req, res) {
+    console.log("Params id: " + req.params.id);
     var status = processPool.getStatus(req.params.id);
     return res.status(200).send({status: status});
   });

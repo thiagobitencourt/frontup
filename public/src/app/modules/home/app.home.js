@@ -15,6 +15,17 @@
       vm.installedMessage = null;
 
       function init() {
+        vm.options = [
+          { name: 'Projeto', value: 'name'},
+          { name: 'Versão recente', value: 'lastVersion'}
+        ];
+
+        vm.helpers = {
+          onInstall: install
+        };
+
+        vm.projects = [];
+
         homeService
           .getBuckets()
           .then(function(buckets) {
@@ -31,6 +42,22 @@
           .getProjects(vm.currentBucket.Name)
           .then(function(projects) {
               vm.projects = projects.data;
+              if(vm.projects && vm.projects.length) {
+                vm.projects.forEach(function(project) {
+                  if(project.records && project.records.length) {
+                    var lastM = 0; var lastV;
+                    project.records.forEach(function(record) {
+                      var t  = new Date(record.lastModified);
+                      var cur = t.getTime();
+                      if(cur > lastM) {
+                        lastM = cur;
+                        lastV = record.version;
+                      }
+                    });
+                    project.lastVersion = lastV;
+                  } 
+                });
+              }
           }, _handleError);
       };
 
@@ -53,11 +80,12 @@
               ' - ', project.status.description,
               '. ', project.status.message].join('');
 
-            if(project.status.description === 'Error')
+            if(project.status.description === 'Error' || project.status.description === 'Not found')
               return _handleError(message);
             vm.installedMessage = message;
             if(project.status.description !== 'Done' &&
-               project.status.description !== 'Error'
+               project.status.description !== 'Error' &&
+               project.status.description !== 'Not found'
             ) {
               $timeout(function() {
                 _getStatus(project);

@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/simple-grid.css">
   </head>
   <body ng-app="app.frontup" ng-controller="homeController as $home">
 
@@ -14,7 +16,6 @@
 
     <div class="row">
       <div class="col-md-3">
-
         <select class="form-control" placeholder="Select a bucket"
             ng-options="bucket.Name for bucket in $home.buckets"
             ng-model="$home.currentBucket"
@@ -24,6 +25,7 @@
       </div>
       <p class="text-danger" style="margin-top:5px;"> Using bucket: <strong>{{$home.currentBucket.Name || 'none selected'}}</strong></p>
     </div>
+    <br>
 
     <div ng-if="$home.installedMessage">
       <div class="alert alert-success">
@@ -31,7 +33,7 @@
         {{$home.installedMessage}}
       </div>
     </div>
-
+    
     <div ng-if="$home.apiError">
       <div class="alert alert-danger">
         <a href="" ng-click="$home.apiError = null"class="close" data-dismiss="alert">&times;</a>
@@ -39,22 +41,27 @@
       </div>
     </div>
 
-    <accordion ng-if="$home.currentBucket">
-      <accordion-panel ng-repeat="project in $home.projects" heading="{{project.name}}">
-        <project-table records="project.records" on-install="$home.install(project)"></project-table>
-      </accordion-panel>
-    </accordion>
+    <br>
+    <div>
+      <senior-simple-grid
+        options="$home.options"
+        items="$home.projects" 
+        open-multi="false"
+        collapsable="true"
+        sorting="true" 
+        enable-filter="true"
+        inner-template="'app/modules/home/home.inner.html'" 
+        inner-controller="$home.helpers">
+      </senior-simple-grid>
+    </div>
 
     </div>
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-    <!--
-    <script type="text/javascript" src="assets/libs/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="assets/libs/angular/angular.min.js"></script>
-    -->
+
+    <script type="text/javascript" src="https://cdn.senior.com.br/platform/1.0.2/js/senior-simple-grid.min.js"></script>
 
     <script type="text/javascript" src="app/modules/home/app.home.js"></script>
     <script type="text/javascript" src="app/modules/home/home.service.js"></script>
