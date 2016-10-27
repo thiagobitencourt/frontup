@@ -1,27 +1,55 @@
-<table class="table table-bordered">
-  <tr>
-    <td>Status</td>
-    <td>Versão</td>
-    <td>Tamanho</td>
-    <td>Data</td>
-    <td>Instalar</td>
-  </tr>
-  <tr ng-repeat="record in $ctrl.records">
-    <td align="center">
-      <span ng-if="record.status">
-        <i ng-if="record.status.code === 1"  style="color: blue;" class="glyphicon glyphicon-download-alt"></i>
-        <i ng-if="record.status.code === 2"  style="color: blue;" class="glyphicon glyphicon-save"></i>
-        <i ng-if="record.status.code === 3" style="color: green;" class="glyphicon glyphicon-ok"></i>
-        <i ng-if="record.status.code === 4"  style="color: blue;" class="glyphicon glyphicon-refresh"></i>
-        <i ng-if="record.status.code === 5"  style="color: red;" class="glyphicon glyphicon-remove"></i>
-        {{record.status.description}}
+<div>
+  
+  <div class="col-md-3 pull-right" style="padding-right: 0px;">
+    <div class="input-group">
+      <input type="text" ng-model="$ctrl.searchText" class="form-control" placeholder="Pesquisar...">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button">
+          <i class="glyphicon glyphicon-search"></i>
+        </button>
       </span>
-    </td>
-    <td>{{record.version}}</td>
-    <td>{{record.size}}</td>
-    <td>{{record.lastModified | date:'dd/MM/yyyy HH:mm'}}</td>
-    <td>
-      <a ng-click="$ctrl.onInstall({project: record})" style="cursor: pointer;"><i class="glyphicon glyphicon-cloud-download"></i> instalar</a>
-    </td>
-  </tr>
-</table>
+    </div>
+  </div>
+  <br><br>
+
+  <table class="table table-bordered">
+    <tr>
+      <td>Status</td>
+      <td>Versão</td>
+      <td>Tamanho</td>
+      <td>Data</td>
+      <td>Instalar</td>
+    </tr>
+    <tr dir-paginate="record in $ctrl.records | filter:$ctrl.searchText | itemsPerPage:10">
+      <td align="center">
+        <span ng-if="record.status">
+          <i ng-if="record.status.code === 1" style="color: blue;" class="glyphicon glyphicon-download-alt"></i>
+          <i ng-if="record.status.code === 2" style="color: blue;" class="glyphicon glyphicon-save"></i>
+          <i ng-if="record.status.code === 3" style="color: green;" class="glyphicon glyphicon-ok"></i>
+          <i ng-if="record.status.code === 4" style="color: blue;" class="glyphicon glyphicon-refresh"></i>
+          <i ng-if="record.status.code === 5" style="color: red;" class="glyphicon glyphicon-remove"></i>
+          {{record.status.description}}
+        </span>
+      </td>
+      <td>{{record.version}}</td>
+      <td>{{record.size}}</td>
+      <td>{{record.lastModified | date:'dd/MM/yyyy HH:mm'}}</td>
+      <td>
+        <a ng-click="$ctrl.onInstall({project: record})" style="cursor: pointer;"><i class="glyphicon glyphicon-cloud-download"></i> instalar</a>
+      </td>
+    </tr>
+  </table>
+
+  <div class="row">
+		<div class="col-md-7 col-xs-12 col-sm-12">
+			<dir-pagination-controls 
+				max-size="10" 
+				boundary-links="false">
+			</dir-pagination-controls>
+		</div>
+		<div class="col-md-5 col-xs-12 col-sm-12">
+			<p style="text-align: right;">{{($ctrl.records.length || 0) + ($ctrl.records.length === 1 ? ' registro encontrado' : ' registros encontrados')}}</p>
+		</div>
+	</div>
+
+</div>

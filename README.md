@@ -10,6 +10,8 @@ npm install
 node app.js
 ```
 
+P.S. Do NOT use nodemon for local run.
+
 ## Features
 
 - Download the files from AWS S3 Buckets

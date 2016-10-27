@@ -21,6 +21,7 @@ var ProcessPool = function(){
     var processPool = {};
 
     this.getStatus = function(proc) {
+      console.log(proc);
       if(!isNaN(proc)) {
         var pr = processPool[proc];
         return pr ? pr.status() : Process.STATUS.NOTFOUND;
