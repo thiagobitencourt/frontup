@@ -80,9 +80,22 @@ var FlowManager = function() {
   }
 
   function _clean(proc) {
+    var compresser = require(__base + 'controllers/compress');
     var deferred = $q.defer();
+    var object = proc.options().object.destination;
 
-    deferred.resolve(_process);
+    if(!proc.options().install.keep) {
+      compresser.remove(object, function(err) {
+        if(err) { // Log purpouse only
+          var message = 'Error on remove file: ' + object;
+          console.log(message);
+          proc.status(Process.STATUS.ERROR, message);
+        } else {
+          console.log('Successfuly removed: ' + object);
+        }
+      });
+    }
+    deferred.resolve(proc);
     return deferred.promise;
   }
 
