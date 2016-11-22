@@ -12,7 +12,7 @@ var InitProcess = function(proc) {
     .then(Flow.Fetch)
     .then(Flow.Extract)
     // .then(Flow.Install)
-    // .then(Flow.Clean)
+    .then(Flow.Clean)
     .then(Flow.Done)
     .catch(Flow.Error)
 }

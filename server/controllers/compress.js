@@ -5,7 +5,8 @@ var CompressController = function() {
 
 
   var services = {
-    decompress: decompress
+    decompress: decompress,
+    remove: remove
   };
   return services;
 
@@ -24,6 +25,17 @@ var CompressController = function() {
       targz().extract(source, dest, callback);
     });
   };
+
+  function remove(source, callback) {
+    // mark to remove after a 30 sec
+    setTimeout(function() {
+      console.log('Removing file: ' + source);
+      fs.remove(source, function(err){
+        if (err) return callback(err);
+        callback();
+      });
+    }, 1000 * 30);
+  }
 };
 
 module.exports = CompressController();
