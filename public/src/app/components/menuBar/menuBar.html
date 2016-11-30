@@ -7,7 +7,8 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="">Projetos</a></li>
+        <li ng-class="{'active': $ctrl.projSelected}"><a href="" ng-click="$ctrl.projSelected = true; $ctrl.onClick('projetos')">Projetos</a></li>
+        <li ng-class="{'active': !$ctrl.projSelected}"><a href="" ng-click="$ctrl.projSelected = false; $ctrl.onClick('json')">JSON</a></li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">

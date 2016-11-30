@@ -24,4 +24,4 @@ P.S. Do NOT use nodemon for local run.
 - Download from Bitbucket
 - Download from custom API
 
-**Author**  _Thiago R. M. Bitencourt_
+**Author**  _Thiago R. M. Bitencourt < thiago.mbitencourt@gmail.com >_

@@ -24,6 +24,11 @@
           onInstall: install
         };
 
+        vm.onClick = function(it) {
+          vm.projSelected = it === 'projetos';
+        }
+        vm.projSelected = true;
+        vm.configJson = {};
         vm.projects = [];
 
         homeService
@@ -34,10 +39,39 @@
               vm.currentBucket = vm.buckets[0];
               loadProjects();
           }, _handleError);
+
+        homeService
+          .getJson()
+          .then(function(result) {
+            vm.configJson = result.data;
+
+            // function _analiseObj(obj) {
+            //   for(var attr in obj) {
+            //     console.log(attr);
+            //     console.log(obj[attr]);
+            //     if(angular.isArray(obj[attr])) {
+            //       console.log(' ---> é array')
+            //       obj[attr].forEach(function(el) {
+            //         _analiseObj(el);
+            //       });
+            //     } else if(obj[attr] === true || obj[attr] === false) {
+            //       console.log(' ===> é boleano')
+            //     } else if(angular.isObject(obj[attr])) {
+            //       console.log(' >>>>> é objeto');
+            //       _analiseObj(obj[attr]);
+            //     } else {
+            //       console.log(' ____> é string ou número');
+            //     }
+            //   }
+            // }
+            // _analiseObj(vm.configJson);
+
+          });
       }
 
       function loadProjects() {
         if(!vm.currentBucket) return;
+        vm.projects = [];
         homeService
           .getProjects(vm.currentBucket.Name)
           .then(function(projects) {
@@ -55,7 +89,7 @@
                       }
                     });
                     project.lastVersion = lastV;
-                  } 
+                  }
                 });
               }
           }, _handleError);

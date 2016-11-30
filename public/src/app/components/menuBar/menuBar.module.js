@@ -3,7 +3,7 @@
   angular.module('app.menuBar', [])
   .component('menuBar', {
     bindings: {
-      // no bindings yet
+      onClick: '='
     },
     templateUrl: 'app/components/menuBar/menuBar.html',
     controller: menuBarController
@@ -13,5 +13,6 @@
     var vm = this;
 
     vm.inProgress = 0;
+    vm.projSelected = true;
   };
 })();
