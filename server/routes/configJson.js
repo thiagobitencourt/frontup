@@ -8,21 +8,40 @@ var ConfigJsonRoute = function(router) {
 
 var setConfigJsonRoutes = function() {
   var _route = '/config-json';
+  var fs = require('fs');
 
   this.router.get(_route, function(req, res) {
 
-    res.json(
-      {
-        "config": {
-          option: true,
-          desce:
-          [
-            {outro: false, attrr: 'atributo'},
-            {outro: true, attrr: 'qualquer coisa', opt: {a: 'a'}}
+    var config = fs.readFileSync(__base + 'config/config.json', 'utf-8');
+    res.json(JSON.parse(config));
+    
+    return;
+    res.json({
+      "menu": [
+        {
+          label: "Entrada 1",
+          children: [
+            {
+              label: 'Sub-menu1',
+              path: {
+                type: 'iframe',
+                menuId: 'path/to/frontend'
+              },
+              auth: {
+                resource: 'resource for the menu entry',
+                permission: 'permission'
+              }
+            }
           ]
-        },
-        valor: 250,
-        url: 'url_aqui'
+        }, 
+        {
+          label: 'Entrada 2',
+          path: {
+            type: 'iframe',
+            menuId: 'path/to/frontend'
+          }
+        }
+      ]
     });
   });
 };

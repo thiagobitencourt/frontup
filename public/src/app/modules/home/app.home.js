@@ -14,6 +14,10 @@
       vm.currentBucket = null;
       vm.installedMessage = null;
 
+      vm.itemClicked = itemClicked;
+      vm.subItemClicked = subItemClicked;
+      vm.save = save;
+
       function init() {
         vm.options = [
           { name: 'Projeto', value: 'name'},
@@ -43,30 +47,36 @@
         homeService
           .getJson()
           .then(function(result) {
-            vm.configJson = result.data;
-
-            // function _analiseObj(obj) {
-            //   for(var attr in obj) {
-            //     console.log(attr);
-            //     console.log(obj[attr]);
-            //     if(angular.isArray(obj[attr])) {
-            //       console.log(' ---> é array')
-            //       obj[attr].forEach(function(el) {
-            //         _analiseObj(el);
-            //       });
-            //     } else if(obj[attr] === true || obj[attr] === false) {
-            //       console.log(' ===> é boleano')
-            //     } else if(angular.isObject(obj[attr])) {
-            //       console.log(' >>>>> é objeto');
-            //       _analiseObj(obj[attr]);
-            //     } else {
-            //       console.log(' ____> é string ou número');
-            //     }
-            //   }
-            // }
-            // _analiseObj(vm.configJson);
-
+            vm.configJson = result.data.menu.children;
           });
+      }
+
+      function _unActive(arr) {
+        arr.forEach(function(it) {
+          it.options = it.options || {};
+          it.options.active = false; 
+        });
+      }
+
+      function itemClicked(item) {
+        _unActive(vm.configJson);
+        item.options.active = true;
+        vm.currentItem = item;
+      }
+
+      function subItemClicked(sub, item) {
+        _unActive(item.children);
+        sub.options.active = true;
+        vm.currentItem = sub;
+      }
+
+      function save() {
+        console.log(vm.currentItem);
+        console.log("depois de limpar...");
+        delete vm.currentItem.options;
+        console.log(vm.currentItem);
+        vm.currentItem = undefined;
+        _unActive(vm.configJson);
       }
 
       function loadProjects() {

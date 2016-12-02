@@ -1,21 +1,52 @@
 <div>
 
-  <pre>
-    {{$home.configJson | json}}
-  </pre>
+  <div class="col-md-4">
+    <strong>Menu: </strong>
+    <div class="list-group">
+       <span ng-repeat="item in $home.configJson">
+        <a ng-click="$home.itemClicked(item)" class="list-group-item" ng-class="{'active': item.options.active}">
+          <strong>{{item.label}}</strong>
+        </a>
+        <div ng-if="item.options.active" class="list-group" style="margin-left: 30px;">
+          <span>
+            <a ng-click="$home.subItemClicked(sub, item)" class="list-group-item" ng-class="{'active': sub.options.active}" ng-repeat="sub in item.children">{{sub.label}}</a>
+          </span>
+        </div>    
+      </span>
+    </div>
+  </div>
 
-  <div>
-    <button type="button" class="btn btn-primary">
-      <i class="glyphicon glyphicon-ok"></i> Salvar
-    </button>
+  <div class="col-md-8">
+    <div class="col-md-12">
+      <button ng-disabled="!$home.currentItem || $home.currentItem.options.editing" ng-click="$home.currentItem.options.editing = true" type="button" class="btn btn-success btn-sm pull-right">
+        <i class="glyphicon glyphicon-pencil"></i>
+        Editar
+      </button>
+    </div>
+    <div class="col-md-12" ng-if="!$home.currentItem.options.editing">
+      <pre>
+        {{($home.currentItem | json) || 'Selecione um item'}}
+      </pre>
+    </div>
+    <div class="col-md-12" ng-if="$home.currentItem.options.editing">
+      <h1>Mode de edição habilitado!</h1>
+    </div>
+  </div>
 
-    <button type="button" class="btn btn-default">
-      <i class="glyphicon glyphicon-download-alt"></i> Download
-    </button>
+  <div class="col-md-offset-4 col-md-8">
+    <div>
+      <button type="button" class="btn btn-primary" ng-click="$home.save()" ng-disabled="!$home.currentItem.options.editing">
+        <i class="glyphicon glyphicon-ok"></i> Salvar
+      </button>
 
-    <button type="button" class="btn btn-default">
-      <i class="glyphicon glyphicon-open-file"></i> Selecionar arquivo
-    </button>
+      <button type="button" class="btn btn-default" disabled>
+        <i class="glyphicon glyphicon-download-alt"></i> Download
+      </button>
+
+      <button type="button" class="btn btn-default" disabled>
+        <i class="glyphicon glyphicon-open-file"></i> Selecionar arquivo
+      </button>
+    </div>
   </div>
 
 </div>
