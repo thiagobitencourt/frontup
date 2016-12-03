@@ -17,6 +17,8 @@
       vm.itemClicked = itemClicked;
       vm.subItemClicked = subItemClicked;
       vm.save = save;
+      vm.addItem = addItem;
+      vm.removeItem = removeItem;
 
       vm.copy = function() {
         var obj = angular.copy(vm.currentItem);
@@ -60,6 +62,39 @@
           });
       }
 
+      function removeItem() {
+        function _rmItem(obj) {
+          obj.forEach(function(item, index) {
+              if(item.label === vm.currentItem.label) {
+                obj.splice(index, 1);
+              } else if(item.children) {
+                _rmItem(item.children);
+              }
+          });
+        };
+        _rmItem(vm.configJson);
+        _unActive(vm.configJson);
+        vm.currentItem = null;
+        _saveConfig(vm.configJson);
+      }
+
+      function addItem() {
+        function _findPar(obj) {
+          obj.forEach(function(item, index) {
+              if(item.label === vm.currentItem.label) {
+                obj.splice(index + 1, 0, {label: vm.newItemLabel});
+              } else if(item.children) {
+                _findPar(item.children);
+              }
+          });
+        };
+        _findPar(vm.configJson);
+        _saveConfig(vm.configJson);
+
+        vm.addingItem = false;
+        vm.newItemLabel = '';
+      }
+
       function _unActive(arr) {
         arr.forEach(function(it) {
           it.options = it.options || {};
@@ -78,12 +113,17 @@
       }
 
       function _setCurrent(item, three) {
+        vm.addingItem = false;
         _unActive(three);
         item.options.active = true;
         vm.currentItem = item;
 
         vm.currentItem.options.show = _toShow(vm.currentItem);
-        vm.currentItemString = JSON.stringify(vm.currentItem)
+
+        var obj = angular.copy(vm.currentItem);
+        _clearItem([obj]);
+
+        vm.currentItemString = JSON.stringify(obj, null, 2);
       }
 
       function itemClicked(item) {
@@ -177,8 +217,7 @@
 
         _clearItem(toSave);
         vm.originalJson.menu.children = toSave;
-        console.log(vm.originalJson);
-        
+
         homeService.saveJson(vm.originalJson)
         .then(function(result) {
           vm.successMessage = 'Configuração atualizada com sucesso!';

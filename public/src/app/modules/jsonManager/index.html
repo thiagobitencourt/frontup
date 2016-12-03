@@ -11,8 +11,7 @@
   </div>
 
   <div class="col-md-4">
-    <strong>Menu: </strong>
-    <div class="list-group" style="margin-top: 27px;">
+    <div class="list-group">
        <span ng-repeat="item in $home.configJson">
         <a ng-click="$home.itemClicked(item)" class="list-group-item" ng-class="{'active': item.options.active}">
           <strong>{{item.label}}</strong>
@@ -24,42 +23,62 @@
         </div>
       </span>
     </div>
+
+    <button ng-click="$home.addingItem = true;" type="button" ng-disabled="!$home.currentItem" class="btn btn-primary" data-toggle="tooltip" title="Adiciona um item a baixo do item selecionado">
+      <i class="glyphicon glyphicon-plus"></i> Item
+    </button>
+
+    <button type="button" class="btn btn-default" disabled>
+      <i class="glyphicon glyphicon-download-alt"></i> Download
+    </button>
+
+    <button type="button" class="btn btn-default" disabled>
+      <i class="glyphicon glyphicon-open-file"></i> Selecionar arquivo
+    </button>
+
+    <div class="input-group" ng-if="$home.addingItem" style="margin-top: 15px;">
+      <input type="text" ng-model="$home.newItemLabel" class="form-control" placeholder="Label">
+      <span class="input-group-btn">
+        <button ng-click="$home.addItem()" class="btn btn-success" type="button" data-toggle="tooltip" title="Salvar item">
+          <i class="glyphicon glyphicon-ok"></i>
+        </button>
+      </span>
+    </div>
+
   </div>
 
   <div class="col-md-8">
-    <div class="col-md-12" style="margin-bottom: 15px;">
-      <button ng-if="$home.currentItem && !$home.currentItem.options.editing" ng-click="$home.copy()" type="button" class="btn btn-success btn-sm pull-right">
-        <i class="glyphicon glyphicon-pencil"></i>
-        Editar
-      </button>
-      <button ng-if="$home.currentItem && $home.currentItem.options.editing" ng-click="$home.currentItem.options.editing = false;" type="button" class="btn btn-danger btn-sm pull-right">
-        <i class="glyphicon glyphicon-remove"></i>
-        Cancelar
-      </button>
-    </div>
-    <div class="col-md-12" ng-if="!$home.currentItem.options.editing">
+    <div class="col-md-12" ng-if="!$home.currentItem">
       <pre id="json">
-        {{($home.currentItem.options.show | json) || 'Selecione um item'}}
+        {{'Selecione um item'}}
       </pre>
     </div>
-    <div class="col-md-12" ng-if="$home.currentItem.options.editing" style="margin-bottom: 15px;">
-      <textarea class="form-control" rows="20" ng-model="$home.currentItemString"></textarea>
+    <div class="col-md-12" ng-if="$home.currentItem" style="margin-bottom: 15px;">
+      <textarea class="form-control" ng-disabled="!$home.currentItem || !$home.currentItem.options.editing" rows="20" ng-model="$home.currentItemString"></textarea>
     </div>
-  </div>
 
-  <div class="col-md-offset-4 col-md-8">
     <div>
-      <button type="button" class="btn btn-primary" ng-click="$home.save()" ng-disabled="!$home.currentItem.options.editing">
-        <i class="glyphicon glyphicon-ok"></i> Salvar
-      </button>
+      <div style="margin-left: 15px;">
 
-      <button type="button" class="btn btn-default" disabled>
-        <i class="glyphicon glyphicon-download-alt"></i> Download
-      </button>
+        <button ng-if="$home.currentItem && !$home.currentItem.options.editing" ng-click="$home.currentItem.options.editing = true;" type="button" class="btn btn-primary">
+          <i class="glyphicon glyphicon-pencil"></i>
+          Editar
+        </button>
 
-      <button type="button" class="btn btn-default" disabled>
-        <i class="glyphicon glyphicon-open-file"></i> Selecionar arquivo
-      </button>
+        <button ng-if="$home.currentItem && !$home.currentItem.options.editing" ng-click="$home.removeItem()" type="button" class="btn btn-danger">
+          <i class="glyphicon glyphicon-trash"></i>
+          Remover
+        </button>
+
+        <button ng-if="$home.currentItem && $home.currentItem.options.editing" type="button" class="btn btn-success" ng-click="$home.save()" ng-disabled="!$home.currentItem.options.editing">
+          <i class="glyphicon glyphicon-ok"></i> Salvar
+        </button>
+        <button ng-if="$home.currentItem && $home.currentItem.options.editing" ng-click="$home.currentItem.options.editing = false;" type="button" class="btn btn-default">
+          <i class="glyphicon glyphicon-remove"></i>
+          Cancelar
+        </button>
+
+      </div>
     </div>
   </div>
 

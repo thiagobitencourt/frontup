@@ -33,7 +33,7 @@
             }
           },
           {
-            "label": "Consulta de clientes",
+            "label": "Consulta",
             "path": {
               "category": "iframe",
               "menuId": "http://teste27.interno.senior.com.br/consulta/"
