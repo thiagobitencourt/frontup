@@ -2,7 +2,7 @@
 
   <div class="col-md-4">
     <strong>Menu: </strong>
-    <div class="list-group">
+    <div class="list-group" style="margin-top: 27px;">
        <span ng-repeat="item in $home.configJson">
         <a ng-click="$home.itemClicked(item)" class="list-group-item" ng-class="{'active': item.options.active}">
           <strong>{{item.label}}</strong>
@@ -11,25 +11,29 @@
           <span>
             <a ng-click="$home.subItemClicked(sub, item)" class="list-group-item" ng-class="{'active': sub.options.active}" ng-repeat="sub in item.children">{{sub.label}}</a>
           </span>
-        </div>    
+        </div>
       </span>
     </div>
   </div>
 
   <div class="col-md-8">
-    <div class="col-md-12">
-      <button ng-disabled="!$home.currentItem || $home.currentItem.options.editing" ng-click="$home.currentItem.options.editing = true" type="button" class="btn btn-success btn-sm pull-right">
+    <div class="col-md-12" style="margin-bottom: 15px;">
+      <button ng-if="$home.currentItem && !$home.currentItem.options.editing" ng-click="$home.copy()" type="button" class="btn btn-success btn-sm pull-right">
         <i class="glyphicon glyphicon-pencil"></i>
         Editar
       </button>
+      <button ng-if="$home.currentItem && $home.currentItem.options.editing" ng-click="$home.currentItem.options.editing = false;" type="button" class="btn btn-danger btn-sm pull-right">
+        <i class="glyphicon glyphicon-remove"></i>
+        Cancelar
+      </button>
     </div>
     <div class="col-md-12" ng-if="!$home.currentItem.options.editing">
-      <pre>
-        {{($home.currentItem | json) || 'Selecione um item'}}
+      <pre id="json">
+        {{($home.currentItem.options.show | json) || 'Selecione um item'}}
       </pre>
     </div>
-    <div class="col-md-12" ng-if="$home.currentItem.options.editing">
-      <h1>Mode de edição habilitado!</h1>
+    <div class="col-md-12" ng-if="$home.currentItem.options.editing" style="margin-bottom: 15px;">
+      <textarea class="form-control" rows="20" ng-model="$home.currentItemString"></textarea>
     </div>
   </div>
 

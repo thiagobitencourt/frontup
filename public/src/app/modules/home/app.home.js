@@ -18,6 +18,14 @@
       vm.subItemClicked = subItemClicked;
       vm.save = save;
 
+      vm.copy = function() {
+        var obj = angular.copy(vm.currentItem);
+        _clearItem([obj]);
+
+        vm.currentItemString = JSON.stringify(obj, null, 2);
+        vm.currentItem.options.editing = true;
+      }
+
       function init() {
         vm.options = [
           { name: 'Projeto', value: 'name'},
@@ -54,29 +62,45 @@
       function _unActive(arr) {
         arr.forEach(function(it) {
           it.options = it.options || {};
-          it.options.active = false; 
+          it.options.active = false;
+          it.options.editing = false;
+          if(it.children) {
+            _unActive(it.children);
+          }
         });
       }
 
-      function itemClicked(item) {
-        _unActive(vm.configJson);
+      function _toShow(item) {
+        var obj = angular.copy(item);
+        _clearItem([obj]);
+        return obj;
+      }
+
+      function _setCurrent(item, three) {
+        _unActive(three);
         item.options.active = true;
         vm.currentItem = item;
+
+        vm.currentItem.options.show = _toShow(vm.currentItem);
+        vm.currentItemString = JSON.stringify(vm.currentItem)
+      }
+
+      function itemClicked(item) {
+        _setCurrent(item, vm.configJson);
       }
 
       function subItemClicked(sub, item) {
-        _unActive(item.children);
-        sub.options.active = true;
-        vm.currentItem = sub;
+        _setCurrent(sub, item.children);
       }
 
       function save() {
-        console.log(vm.currentItem);
-        console.log("depois de limpar...");
-        delete vm.currentItem.options;
-        console.log(vm.currentItem);
-        vm.currentItem = undefined;
-        _unActive(vm.configJson);
+        vm.currentItem.options.editing = false;
+        var cpObj = angular.copy(vm.currentItem);
+
+        angular.extend(vm.currentItem, JSON.parse(vm.currentItemString));
+        vm.currentItem.options.show = _toShow(vm.currentItem);
+
+        _saveConfig(vm.configJson);
       }
 
       function loadProjects() {
@@ -137,6 +161,29 @@
             }
           });
       }
+
+      function _clearItem(arr) {
+        arr.forEach(function(it) {
+          delete it.options;
+          if(it.children) {
+            _clearItem(it.children);
+          }
+        });
+      }
+
+      function _saveConfig(config) {
+        var toSave = angular.copy(config);
+
+        _clearItem(toSave);
+        console.log(toSave);
+        return;
+        homeService.saveConfig(toSave)
+        .then(function(result) {
+          vm.successMessage = 'Configuração atualizada com sucesso!';
+        }, function(error) {
+          vm.errorMessage = 'Falha ao salvar objecto: ' + error.data.message;
+        });
+      };
 
       function _handleError(err) {
         vm.installedMessage = null;
