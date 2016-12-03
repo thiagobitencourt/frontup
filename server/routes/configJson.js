@@ -14,35 +14,17 @@ var setConfigJsonRoutes = function() {
 
     var config = fs.readFileSync(__base + 'config/config.json', 'utf-8');
     res.json(JSON.parse(config));
-    
-    return;
-    res.json({
-      "menu": [
-        {
-          label: "Entrada 1",
-          children: [
-            {
-              label: 'Sub-menu1',
-              path: {
-                type: 'iframe',
-                menuId: 'path/to/frontend'
-              },
-              auth: {
-                resource: 'resource for the menu entry',
-                permission: 'permission'
-              }
-            }
-          ]
-        }, 
-        {
-          label: 'Entrada 2',
-          path: {
-            type: 'iframe',
-            menuId: 'path/to/frontend'
-          }
-        }
-      ]
-    });
+  });
+
+  this.router.post(_route, function(req, res) {
+    console.log(req.body);
+    fs.writeFile(__base + 'config/config.json', JSON.stringify(req.body, null, 2), function(err) {
+      if(err) {
+        console.log(err);
+        return res.status(400).send({message: err});
+      }
+      return res.send({});
+    })
   });
 };
 

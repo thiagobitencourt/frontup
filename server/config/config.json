@@ -18,7 +18,6 @@
   "menu": {
     "label": "ERP",
     "children": [
-    
       {
         "label": "Mercado",
         "children": [
@@ -50,7 +49,6 @@
           }
         ]
       },
-
       {
         "label": "Suprimentos",
         "children": [
@@ -132,9 +130,8 @@
           }
         ]
       },
-
       {
-	      "label": "FinanÃ§as",
+        "label": "FinanÃ§as",
         "children": [
           {
             "label": "Painel",
@@ -209,7 +206,6 @@
           }
         ]
       },
-
       {
         "label": "Controladoria",
         "children": [
@@ -237,13 +233,12 @@
           }
         ]
       },
-
       {
         "label": "Manufatura",
         "children": [
           {
-          "label": "Painel OEE",
-          "children": [
+            "label": "Painel OEE",
+            "children": [
               {
                 "label": "VisÃ£o diÃ¡ria",
                 "path": {
@@ -308,7 +303,6 @@
           }
         ]
       }
-
     ]
   }
 }

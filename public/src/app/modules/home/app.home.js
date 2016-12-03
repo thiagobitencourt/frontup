@@ -55,7 +55,8 @@
         homeService
           .getJson()
           .then(function(result) {
-            vm.configJson = result.data.menu.children;
+            vm.originalJson = result.data;
+            vm.configJson = vm.originalJson.menu.children;
           });
       }
 
@@ -175,9 +176,10 @@
         var toSave = angular.copy(config);
 
         _clearItem(toSave);
-        console.log(toSave);
-        return;
-        homeService.saveConfig(toSave)
+        vm.originalJson.menu.children = toSave;
+        console.log(vm.originalJson);
+        
+        homeService.saveJson(vm.originalJson)
         .then(function(result) {
           vm.successMessage = 'Configuração atualizada com sucesso!';
         }, function(error) {

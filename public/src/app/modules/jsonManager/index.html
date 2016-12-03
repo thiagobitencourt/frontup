@@ -1,5 +1,15 @@
 <div>
 
+  <div ng-if="$home.successMessage" class="alert alert-success alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" ng-click="$home.successMessage = null"><span aria-hidden="true">&times;</span></button>
+    <strong>Sucesso!</strong> {{$home.successMessage}}
+  </div>
+
+  <div ng-if="$home.errorMessage" class="alert alert-danger alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" ng-click="$home.errorMessage = null"><span aria-hidden="true">&times;</span></button>
+    <strong>Erro!</strong> {{$home.errorMessage}}
+  </div>
+
   <div class="col-md-4">
     <strong>Menu: </strong>
     <div class="list-group" style="margin-top: 27px;">
