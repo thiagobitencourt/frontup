@@ -19,6 +19,7 @@
       vm.save = save;
       vm.addItem = addItem;
       vm.removeItem = removeItem;
+      vm.undoDeletion = undoDeletion;
 
       vm.fullFileClicked = fullFileClicked;
 
@@ -74,10 +75,19 @@
               }
           });
         };
+
+        vm.backupConfig = angular.copy(vm.configJson);
+
         _rmItem(vm.configJson);
         _unActive(vm.configJson);
         vm.currentItem = null;
+        _saveConfig(vm.configJson, false, true);
+      }
+
+      function undoDeletion() {
+        angular.extend(vm.configJson, vm.backupConfig);
         _saveConfig(vm.configJson);
+        _unActive(vm.configJson);
       }
 
       function addItem() {
@@ -233,10 +243,11 @@
         });
       }
 
-      function _saveConfig(config, fullFile) {
+      function _saveConfig(config, fullFile, deleting) {
         var toSave = angular.copy(config);
 
         _clearItem(toSave);
+        _clearItem([vm.originalJson]);
         if(!fullFile) { // If edditing full file wee do not need this step
           vm.originalJson.menu.children = toSave;
         } else {
@@ -246,7 +257,17 @@
 
         homeService.saveJson(vm.originalJson)
         .then(function(result) {
-          vm.successMessage = 'Configuração atualizada com sucesso!';
+          if(!deleting) {
+            vm.errorMessage = null;
+            vm.warningMessage = null;
+            vm.successMessage = 'Configuração atualizada com sucesso!';
+            $timeout(function() { vm.successMessage = null}, 7000);
+          } else {
+            vm.errorMessage = null;
+            vm.successMessage = null;
+            vm.warningMessage = 'Item removido!';
+            $timeout(function() { vm.warningMessage = null}, 7000);
+          }
         }, function(error) {
           vm.errorMessage = 'Falha ao salvar objecto: ' + error.data.message;
         });
