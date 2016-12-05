@@ -20,6 +20,8 @@
       vm.addItem = addItem;
       vm.removeItem = removeItem;
 
+      vm.fullFileClicked = fullFileClicked;
+
       vm.copy = function() {
         var obj = angular.copy(vm.currentItem);
         _clearItem([obj]);
@@ -126,11 +128,19 @@
         vm.currentItemString = JSON.stringify(obj, null, 2);
       }
 
+      function fullFileClicked() {
+        vm.originalJson.options = {};
+        vm.fullFileEdditing = true;
+        _setCurrent(vm.originalJson, vm.configJson);
+      }
+
       function itemClicked(item) {
+        vm.fullFileEdditing = false;
         _setCurrent(item, vm.configJson);
       }
 
       function subItemClicked(sub, item) {
+        vm.fullFileEdditing = false;
         _setCurrent(sub, item.children);
       }
 
@@ -138,10 +148,19 @@
         vm.currentItem.options.editing = false;
         var cpObj = angular.copy(vm.currentItem);
 
-        angular.extend(vm.currentItem, JSON.parse(vm.currentItemString));
-        vm.currentItem.options.show = _toShow(vm.currentItem);
+        vm.errorMessage = null;
+        try {
+          var objParsed;
+          objParsed = JSON.parse(vm.currentItemString);
 
-        _saveConfig(vm.configJson);
+          angular.extend(vm.currentItem, objParsed);
+          vm.currentItem.options.show = _toShow(vm.currentItem);
+
+          // _saveConfig(vm.configJson, vm.fullFileEdditing);
+          _saveConfig(vm.configJson, vm.fullFileEdditing);
+        } catch (e) {
+          vm.errorMessage = 'Arquvio JSON inválido: ' + e;
+        }
       }
 
       function loadProjects() {
@@ -208,15 +227,22 @@
           delete it.options;
           if(it.children) {
             _clearItem(it.children);
+          } else if(it.menu && it.menu.children) { // In case it is the full file
+            _clearItem(it.menu.children);
           }
         });
       }
 
-      function _saveConfig(config) {
+      function _saveConfig(config, fullFile) {
         var toSave = angular.copy(config);
 
         _clearItem(toSave);
-        vm.originalJson.menu.children = toSave;
+        if(!fullFile) { // If edditing full file wee do not need this step
+          vm.originalJson.menu.children = toSave;
+        } else {
+          _clearItem([vm.originalJson]);
+          vm.configJson = vm.originalJson.menu.children; // Reset config json to update data
+        }
 
         homeService.saveJson(vm.originalJson)
         .then(function(result) {

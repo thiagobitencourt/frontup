@@ -12,6 +12,15 @@
 
   <div class="col-md-4">
     <div class="list-group">
+      <span>
+        <a ng-click="$home.fullFileClicked()" class="list-group-item" ng-class="{'active': $home.fullFileEdditing}">
+          <strong>Arquivo completo</strong>
+        </a>
+      </span>
+      <br>
+      <div style="margin-bottom: 10px;" align="center">
+        <strong>Menu</strong>
+      </div>
        <span ng-repeat="item in $home.configJson">
         <a ng-click="$home.itemClicked(item)" class="list-group-item" ng-class="{'active': item.options.active}">
           <strong>{{item.label}}</strong>
@@ -24,7 +33,7 @@
       </span>
     </div>
 
-    <button ng-click="$home.addingItem = true;" type="button" ng-disabled="!$home.currentItem" class="btn btn-primary" data-toggle="tooltip" title="Adiciona um item a baixo do item selecionado">
+    <button ng-click="$home.addingItem = true;" type="button" ng-disabled="!$home.currentItem || $home.fullFileEdditing" class="btn btn-primary" data-toggle="tooltip" title="Adiciona um item a baixo do item selecionado">
       <i class="glyphicon glyphicon-plus"></i> Item
     </button>
 
@@ -65,7 +74,7 @@
           Editar
         </button>
 
-        <button ng-if="$home.currentItem && !$home.currentItem.options.editing" ng-click="$home.removeItem()" type="button" class="btn btn-danger">
+        <button ng-if="$home.currentItem && !$home.currentItem.options.editing && !$home.fullFileEdditing" ng-click="$home.removeItem()" type="button" class="btn btn-danger">
           <i class="glyphicon glyphicon-trash"></i>
           Remover
         </button>
@@ -73,6 +82,7 @@
         <button ng-if="$home.currentItem && $home.currentItem.options.editing" type="button" class="btn btn-success" ng-click="$home.save()" ng-disabled="!$home.currentItem.options.editing">
           <i class="glyphicon glyphicon-ok"></i> Salvar
         </button>
+
         <button ng-if="$home.currentItem && $home.currentItem.options.editing" ng-click="$home.currentItem.options.editing = false;" type="button" class="btn btn-default">
           <i class="glyphicon glyphicon-remove"></i>
           Cancelar
