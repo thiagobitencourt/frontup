@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-md-3">
+    <select class="form-control" placeholder="Select a bucket"
+        ng-options="bucket.Name for bucket in $home.buckets"
+        ng-model="$home.currentBucket"
+        ng-click="$home.loadProjects()">
+      <option value="">Select a bucket</option>
+     </select>
+  </div>
+  <p class="text-danger" style="margin-top:5px;"> Using bucket: <strong>{{$home.currentBucket.Name || 'none selected'}}</strong></p>
+</div>
+<br>
+
+<div ng-if="$home.installedMessage">
+  <div class="alert alert-success">
+    <a href="" ng-click="$home.installedMessage = null"class="close" data-dismiss="alert">&times;</a>
+    {{$home.installedMessage}}
+  </div>
+</div>
+
+<div ng-if="$home.apiError">
+  <div class="alert alert-danger">
+    <a href="" ng-click="$home.apiError = null"class="close" data-dismiss="alert">&times;</a>
+    {{$home.apiError}}
+  </div>
+</div>
+
+<br>
+<div ng-if="$home.projects.length">
+  <senior-simple-grid
+    options="$home.options"
+    items="$home.projects"
+    open-multi="false"
+    collapsable="true"
+    sorting="true"
+    enable-filter="true"
+    inner-template="'app/modules/home/home.inner.html'"
+    inner-controller="$home.helpers">
+  </senior-simple-grid>
+</div>
+<div ng-if="!$home.projects.length">
+  <strong>Carregando...</strong>
+</div>

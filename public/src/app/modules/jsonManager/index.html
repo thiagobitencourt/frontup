@@ -1,0 +1,102 @@
+<div>
+
+  <div ng-if="$home.successMessage" class="alert alert-success alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" ng-click="$home.successMessage = null"><span aria-hidden="true">&times;</span></button>
+    <strong>Sucesso!</strong> {{$home.successMessage}}
+  </div>
+
+  <div ng-if="$home.warningMessage" class="alert alert-warning alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" ng-click="$home.successMessage = null"><span aria-hidden="true">&times;</span></button>
+    <strong>Sucesso!</strong>
+    <span>{{$home.warningMessage}}</span>
+    <button type="button" ng-click="$home.undoDeletion()" class="btn btn-danger btn-xs">DESFAZER</button>
+  </div>
+
+  <div ng-if="$home.errorMessage" class="alert alert-danger alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" ng-click="$home.errorMessage = null"><span aria-hidden="true">&times;</span></button>
+    <strong>Erro!</strong> {{$home.errorMessage}}
+  </div>
+
+  <div class="col-md-4">
+    <div class="list-group">
+      <span>
+        <a ng-click="$home.fullFileClicked()" class="list-group-item" ng-class="{'active': $home.fullFileEdditing}">
+          <strong>Arquivo completo</strong>
+        </a>
+      </span>
+      <br>
+      <div style="margin-bottom: 10px;" align="center">
+        <strong>Menu</strong>
+      </div>
+       <span ng-repeat="item in $home.configJson">
+        <a ng-click="$home.itemClicked(item)" class="list-group-item" ng-class="{'active': item.options.active}">
+          <strong>{{item.label}}</strong>
+        </a>
+        <div ng-if="item.options.active" class="list-group" style="margin-left: 30px;">
+          <span>
+            <a ng-click="$home.subItemClicked(sub, item)" class="list-group-item" ng-class="{'active': sub.options.active}" ng-repeat="sub in item.children">{{sub.label}}</a>
+          </span>
+        </div>
+      </span>
+    </div>
+
+    <button ng-click="$home.addingItem = true;" type="button" ng-disabled="!$home.currentItem || $home.fullFileEdditing" class="btn btn-primary" data-toggle="tooltip" title="Adiciona um item a baixo do item selecionado">
+      <i class="glyphicon glyphicon-plus"></i> Item
+    </button>
+
+    <button type="button" class="btn btn-default" disabled>
+      <i class="glyphicon glyphicon-download-alt"></i> Download
+    </button>
+
+    <button type="button" class="btn btn-default" disabled>
+      <i class="glyphicon glyphicon-open-file"></i> Selecionar arquivo
+    </button>
+
+    <div class="input-group" ng-if="$home.addingItem" style="margin-top: 15px;">
+      <input type="text" ng-model="$home.newItemLabel" class="form-control" placeholder="Label">
+      <span class="input-group-btn">
+        <button ng-click="$home.addItem()" class="btn btn-success" type="button" data-toggle="tooltip" title="Salvar item">
+          <i class="glyphicon glyphicon-ok"></i>
+        </button>
+      </span>
+    </div>
+
+  </div>
+
+  <div class="col-md-8">
+    <div class="col-md-12" ng-if="!$home.currentItem">
+      <pre id="json">
+        {{'Selecione um item'}}
+      </pre>
+    </div>
+    <div class="col-md-12" ng-if="$home.currentItem" style="margin-bottom: 15px;">
+      <textarea class="form-control" ng-disabled="!$home.currentItem || !$home.currentItem.options.editing" rows="20" ng-model="$home.currentItemString"></textarea>
+    </div>
+
+    <div>
+      <div style="margin-left: 15px;">
+
+        <button ng-if="$home.currentItem && !$home.currentItem.options.editing" ng-click="$home.currentItem.options.editing = true;" type="button" class="btn btn-primary">
+          <i class="glyphicon glyphicon-pencil"></i>
+          Editar
+        </button>
+
+        <button ng-if="$home.currentItem && !$home.currentItem.options.editing && !$home.fullFileEdditing" ng-click="$home.removeItem()" type="button" class="btn btn-danger">
+          <i class="glyphicon glyphicon-trash"></i>
+          Remover
+        </button>
+
+        <button ng-if="$home.currentItem && $home.currentItem.options.editing" type="button" class="btn btn-success" ng-click="$home.save()" ng-disabled="!$home.currentItem.options.editing">
+          <i class="glyphicon glyphicon-ok"></i> Salvar
+        </button>
+
+        <button ng-if="$home.currentItem && $home.currentItem.options.editing" ng-click="$home.currentItem.options.editing = false;" type="button" class="btn btn-default">
+          <i class="glyphicon glyphicon-remove"></i>
+          Cancelar
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+</div>
